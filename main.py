@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 import joblib
 from sklearn.datasets import load_iris
+import pandas as pd
 
 model = joblib.load("iris_random_forest_model.joblib")
 iris = load_iris()
@@ -24,12 +25,12 @@ def home():
 
 @app.post("/predict")
 def predict(data: IrisInput):
-    features = [[
-        data.sepal_length,
-        data.sepal_width,
-        data.petal_length,
-        data.petal_width
-    ]]
+    features = pd.DataFrame([{
+        "sepal length (cm)": data.sepal_length,
+        "sepal width (cm)": data.sepal_width,
+        "petal length (cm)": data.petal_length,
+        "petal width (cm)": data.petal_width
+    }])
 
     prediction = model.predict(features)[0]
     species = iris.target_names[prediction]
