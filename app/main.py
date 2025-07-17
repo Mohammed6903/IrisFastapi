@@ -3,8 +3,12 @@ from pydantic import BaseModel
 import joblib
 from sklearn.datasets import load_iris
 import pandas as pd
+import os
 
-model = joblib.load("iris_random_forest_model.joblib")
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+model_path = os.path.join(BASE_DIR, "ml_model/iris_random_forest_model.joblib")
+
+model = joblib.load(model_path)
 iris = load_iris()
 
 app = FastAPI(title="Iris Classifier API", description="Predict Iris species", version="1.0")
